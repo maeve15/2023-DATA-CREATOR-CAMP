@@ -1,2 +1,2 @@
-# 2023-DATA-CREATOR-CAMP
+# 2023 DATA CREATOR CAMP
 Team DASH (Food Image Classification)
