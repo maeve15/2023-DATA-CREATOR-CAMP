@@ -2,3 +2,4 @@
 Team DASH (Food Image Classification)
 
 한국 음식 이미지 분류 모델  
+korean food image dataset - 
