@@ -142,6 +142,8 @@ classification accuracy<br>
 
 <br>
 
+<br>
+
 #### 2-1 결과 분석
 **1. '구이'류 음식, 비교적 분류 정확도가 낮은 편에 속함**
 <img width="1198" alt="스크린샷 2025-04-06 오후 7 47 49" src="https://github.com/user-attachments/assets/5144664a-907a-4470-89c2-4f3b0243e6b1" />
