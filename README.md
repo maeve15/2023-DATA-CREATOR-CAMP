@@ -158,14 +158,62 @@ classification accuracy<br>
 
 <br>
 
-#### 2-2. 2-1 결과 분석 기반으로 Augmentation 적용
+#### 2-2. ① 2-1의 분석을 기반으로 성능 향상을 위한 작업 수행(Augmentation 적용)
 **point1)** <br>
 이미지 전처리 과정 중 **<mark>밝기, 대비, 채도 등 조절</mark>** <br>
 
 **기대효과)** <br>
 데이터의  **<mark>일관성을 높여</mark>** 시각적 특징을 파악하고 <br>
 더 나아가, **<mark>노이즈 감소</mark>** 를 통해 성능을 향상시키고자 함 <br>
-<br>
- 
+
 ```python
+transform.RandomHorizontalFlip(), # 좌우 반전
+transform.RandomVerticalFlip(),   # 상하 반전
+transform.RandomRotation(90),     # 90도 회전
+transform.ColorJitter(
+      brightness=(0.5, 2),    # 밝기
+      contrast=(0.5, 1.5),    # 대비
+      seturation=(0.8, 1.5))  # 채도
+transform.RandomResizedCrop(size=(240, 240),    # 잘라내고 조절할 크기
+                            scale(0.8, 1.2))    # 스케일 범위(줌인 및 줌아웃 효과)
+```
+<br>
+
+#### 2-2. ② 2-1의 분석을 기반으로 성능 향상을 위한 작업 수행(Batch Size, ResNet 수정)
+**point1)** <br>
+데이터로더 설정 시,  <br>
+Batch Size를 16 -> **<mark>32로 수정</mark>**  <br>
+
+**기대효과)** <br>
+기존보다 더 많은 데이터를 한 번에 처리하여 <br>
+**<mark>학습 시간을 단축</mark>** 하고자 함
+
+```python
+batch_size = 32
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=batch_size)
+```
+<br>
+
+**point2)** <br>
+ResNet18 -> **<mark>ResNet50으로 수정</mark>**  <br>
+
+**기대효과)** <br>
+기존보다 **<mark>더 깊은 신경망을 통해</mark>** 복잡한 특징을 추출하고 <br>
+더욱 **<mark>다양한 정보를 학습</mark>** 시키고자 함 <br>
+
+```python
+
+
+
+
+
+
+
+
+
+
+
+
+
 
