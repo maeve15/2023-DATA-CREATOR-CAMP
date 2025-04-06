@@ -13,7 +13,7 @@ Team DASH (Food Image Classification)
   * kfood_health_train: 14,026개  <br>
   * kfood_health_val: 1,777개  <br>
 
-#### 1-1. 각 클래스로 하는 분류 데이터셋과 데이터로더 준비
+### 1-1. 각 클래스로 하는 분류 데이터셋과 데이터로더 준비
 ```python
 # 이미지 전처리 및 데이터셋 설정
 transform = transform.Compose([transforms.Resize((224, 224)),
@@ -30,7 +30,7 @@ valloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 ```        
 <br>
 
-#### 1-1. 42개 클래스 시각화
+### 1-1. 42개 클래스 시각화
 ```python
 menu_folders = os.listdir(train_dir)
 menu_folders = natsort.natsorted(menu_folders)
@@ -57,7 +57,7 @@ plt.show()
 <br> 
 
 
-#### 1-2. 모델 
+### 1-2. 모델 
 ```python
 # 모델 정의
 resnet18 = models.resnet18(pretrained=False)
@@ -119,7 +119,7 @@ if epoch % validation_epochs == 0:
 
 <br>
 
-#### 2-1. ResNet18 결과 비교
+### 2-1. ResNet18 결과 비교
 classification accuracy<br>
 * 상위 7개 음식
 1. 미역국 - 89.80%
@@ -140,7 +140,7 @@ classification accuracy<br>
 
 <br>
 
-#### 2-1. 결과 분석
+### 2-1. 결과 분석
 **1. '구이'류 음식, 비교적 분류 정확도가 낮은 편에 속함**
 <img width="1198" alt="스크린샷 2025-04-06 오후 7 47 49" src="https://github.com/user-attachments/assets/5144664a-907a-4470-89c2-4f3b0243e6b1" />
 
@@ -158,7 +158,7 @@ classification accuracy<br>
 
 <br>
 
-#### 2-2. ① 2-1의 분석을 기반으로 성능 향상을 위한 작업 수행(Augmentation 적용)
+### 2-2. ① 2-1의 분석을 기반으로 성능 향상을 위한 작업 수행(Augmentation 적용)
 **point1)** <br>
 이미지 전처리 과정 중 **<mark>밝기, 대비, 채도 등 조절</mark>** <br>
 
@@ -179,7 +179,7 @@ transform.RandomResizedCrop(size=(240, 240),    # 잘라내고 조절할 크기
 ```
 <br>
 
-#### 2-2. ② 2-1의 분석을 기반으로 성능 향상을 위한 작업 수행(Batch Size, ResNet 수정)
+### 2-2. ② 2-1의 분석을 기반으로 성능 향상을 위한 작업 수행(Batch Size, ResNet 수정)
 **point1)** <br>
 데이터로더 설정 시,  <br>
 Batch Size를 16 -> **<mark>32로 수정</mark>**  <br>
@@ -203,10 +203,21 @@ ResNet18 -> **<mark>ResNet50으로 수정</mark>**  <br>
 더욱 **<mark>다양한 정보를 학습</mark>** 시키고자 함 <br>
 
 ```python
+# 모델 정의
+resnet50 = models.resnet50(pretrained=False)
 
+# Reset Parameters (가중치 초기화)
+def reset_parameters(module):
+    if hasattr(module, 'reset_parameters'):
+       module.reset_parameters()
 
+resnet50.apply(reset_parameters)
 
-
+# 마지막 Fully Connected Layer 변경
+num_classes = 512 # 클래스 수
+resnet50.fc = nn.Linear(2048, num_classes)
+```
+<img width="330" alt="image" src="https://github.com/user-attachments/assets/e656e59d-1b53-4f11-952f-26b876c91dc3" />
 
 
 
