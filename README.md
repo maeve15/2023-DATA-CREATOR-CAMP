@@ -42,20 +42,17 @@ plt.show()
 * 모델 정의 
 ResNet18 <br>
 
-#### 결과 비교
-* classification accuracy
-<br>
-
-상위 7개 음식                                    
+#### ResNet18 결과 비교
+classification accuracy<br>
+* 상위 7개 음식
 1. 미역국 - 89.80%
 2. 육개장 - 88.52%
 3. 알밥 - 87.10%
 4. 잡곡밥 - 86.41%
 5. 꿀떡 - 85.58%
 6. 시래기국 - 85.19%
-7. 계란국 - 83.51%
-   
-하위 7개 음식
+7. 계란국 - 83.51%   
+* 하위 7개 음식
 1. 장어구이 - 48.89%
 2. 갈비구이 - 50.59%
 3. 생선전 - 51.33%
@@ -67,5 +64,21 @@ ResNet18 <br>
 <br>
 
 #### 결과 분석
-* '구이'류 음식, 비교적 분류 정확도 낮은 편 속함
-  
+**1. '구이'류 음식, 비교적 분류 정확도가 낮은 편에 속함**
+<img width="1198" alt="스크린샷 2025-04-06 오후 7 47 49" src="https://github.com/user-attachments/assets/5144664a-907a-4470-89c2-4f3b0243e6b1" />
+
+**2. 음식 형태(모양)가 비슷한 경우, 오인하는 경향 있음**
+<img width="1195" alt="스크린샷 2025-04-06 오후 7 47 57" src="https://github.com/user-attachments/assets/4ad3ee1d-d191-48b7-a6a0-04faae272fd3" />
+
+**3. 음식 색상이 비슷한 경우, 오인하는 경향 있음**
+<img width="1194" alt="스크린샷 2025-04-06 오후 7 48 18" src="https://github.com/user-attachments/assets/cd0e3467-8822-48c8-b752-f252d60c6e7b" />
+
+**4. 다양한 음식이 있는 경우, 오인하는 경향 있음**
+<img width="1197" alt="스크린샷 2025-04-06 오후 7 48 30" src="https://github.com/user-attachments/assets/ef1fb17a-5016-43ba-9a43-f8770a3d3ae8" />
+
+**5. 오인한 경우, 대개 색조와 명도 등 음식 고유 색상이 소실됨 확인**
+<img width="1194" alt="스크린샷 2025-04-06 오후 7 54 28" src="https://github.com/user-attachments/assets/30d432dd-68cd-4e04-b3f2-6d5995900f64" />
+
+
+#### 
+
