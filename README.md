@@ -1,7 +1,6 @@
 # 2023 DATA CREATOR CAMP
-Team DASH (Food Image Classification)
+Team DASH (KFood health Image Classification)
 
-한국 음식 이미지 분류 모델  
 <br>
 
 ### 데이터셋 구성  <br>
