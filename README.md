@@ -113,7 +113,7 @@ if epoch % validation_epochs == 0:
    print(f'Validation Accuracy after {epoch+1} epochs: {accuracy: .2f}%')
 ```
 
-<img width="271" alt="image" src="https://github.com/user-attachments/assets/715e04ca-4f1c-45e9-ac68-1c717290995f" />
+<img width="345" alt="image" src="https://github.com/user-attachments/assets/715e04ca-4f1c-45e9-ac68-1c717290995f" />
 
 <br>
 
@@ -217,7 +217,7 @@ resnet50.apply(reset_parameters)
 num_classes = 512 # 클래스 수
 resnet50.fc = nn.Linear(2048, num_classes)
 ```
-<img width="330" alt="image" src="https://github.com/user-attachments/assets/e656e59d-1b53-4f11-952f-26b876c91dc3" />
+<img width="505" alt="image" src="https://github.com/user-attachments/assets/e656e59d-1b53-4f11-952f-26b876c91dc3" />
 
 
 <br>
@@ -226,7 +226,7 @@ resnet50.fc = nn.Linear(2048, num_classes)
 
 <img width="923" alt="스크린샷 2025-04-06 오후 9 14 30" src="https://github.com/user-attachments/assets/10c6022b-bcb5-4fd2-80bc-b77520ff0633" />
 
-
+----
 <br>
 
 ### 3-1. 건강관리를 위한 음식 이미지 데이터셋과 데이터로더 준비
@@ -250,8 +250,67 @@ train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle =True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size)
 ```
 
-### 3-1. 건강관리를 위한 음식 이미지 데이터 각 클래스별 시각화
+<br>
+
+### 3-1. 건강관리를 위한 음식 이미지 데이터 각 클래스별 하나씩 시각화
 <img width="777" alt="image" src="https://github.com/user-attachments/assets/f990e6f5-bcda-42c7-a7ee-2cb88c8eb40c" />
 
+### 3-1. 모델
+```python
+resnet18 = models.resnet18(pretrained=False)
+
+num_classes = 42
+resnet18.fc = nn.Linear(resnet18.fc.in_features, num_classes)
+```
+<br>
+
+### 3-1. Task에 따른 Transfer Learning 전략
+<img width="737" alt="스크린샷 2025-04-06 오후 9 46 19" src="https://github.com/user-attachments/assets/2612ebc6-4c64-4821-8412-d0dc7b28c7c4" />
+
+<br>
+
+### 3-1. 학습이 안된 모델의 첫번째 layer의 filter 확인
+```python
+for w in resnet18.parameters():
+    w = w.data.cpu()
+    print(w.shape)
+    break
+# 가중치 renormalization
+min_w = torch.min(w)
+w1 = (-1/(2 * min_w)) * w + 0.5
+
+# grid
+grid_size = len(w1)
+x_grid = [w1[i] for i in range(grid_size)]
+x_grid = torchivision.utils.make_grid(x_grid, nrow=8, padding=1)
+
+plt.figure(figsize=(10, 10))
+imshow(x_grid)
+```
+* 초기화된 모델의 첫번째 layer의 filter
+<img width="405" alt="image" src="https://github.com/user-attachments/assets/448e8666-d94c-409e-8dad-586cc3069afe" />
+
+<br>
+
+### 3-1. 학습된 모델의 파라미터 적용 및 linear probing 진행
+Resnet 18-50epochs에서의 accuracy  시각화 - 상승과 하락을 반복하며 **<mark>93~4%**</mark> 에서 수렴
+  
+<img width="666" alt="image" src="https://github.com/user-attachments/assets/3e33623c-f877-4920-b699-abc7b2075958" />
+
+<br>
+<br>
+
+## 결과 분석
+모델 평가 및 결과 분석
+
+<img width="498" alt="image" src="https://github.com/user-attachments/assets/b03c34bb-73d3-4c9d-aecf-c984f1df1ef9" />
+<br>
+
+**Validation Accuracy :** 
+**<mark>94.16%**</mark>  
+<br>
+13개 중 **11개 음식 분류 정확도** **<mark>95% 이상**</mark>  <br>
+
+**모든 클래스**의 **분류 정확도** **<mark>70% 이상**</mark>  <br>
 
 
