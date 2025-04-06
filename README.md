@@ -115,9 +115,7 @@ if epoch % validation_epochs == 0:
 
 <img width="271" alt="image" src="https://github.com/user-attachments/assets/715e04ca-4f1c-45e9-ac68-1c717290995f" />
 
-
-
-
+<br>
 
 <br>
 
@@ -142,9 +140,7 @@ classification accuracy<br>
 
 <br>
 
-<br>
-
-#### 2-1 결과 분석
+#### 2-1. 결과 분석
 **1. '구이'류 음식, 비교적 분류 정확도가 낮은 편에 속함**
 <img width="1198" alt="스크린샷 2025-04-06 오후 7 47 49" src="https://github.com/user-attachments/assets/5144664a-907a-4470-89c2-4f3b0243e6b1" />
 
@@ -160,6 +156,13 @@ classification accuracy<br>
 **5. 오인한 경우, 대개 색조와 명도 등 음식 고유 색상이 소실됨 확인**
 <img width="1194" alt="스크린샷 2025-04-06 오후 7 54 28" src="https://github.com/user-attachments/assets/30d432dd-68cd-4e04-b3f2-6d5995900f64" />
 
+<br>
 
-#### 2-2. 2-1 결과 분석 바탕으로 
+#### 2-2. 2-1 결과 분석 기반으로 Augmentation 적용
+**point1)** <br>
+<mark>이미지 전처리 과정 중 밝기, 대비, 채도 등 조절 </mark>
+ 
+<br>
+ 
+```python
 
