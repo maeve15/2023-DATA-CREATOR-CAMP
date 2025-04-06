@@ -160,8 +160,10 @@ classification accuracy<br>
 
 #### 2-2. 2-1 결과 분석 기반으로 Augmentation 적용
 **point1)** <br>
-<mark>이미지 전처리 과정 중 밝기, 대비, 채도 등 조절 </mark>
- 
+이미지 전처리 과정 중 <mark>밝기, 대비, 채도 등 조절</mark>
+**기대효과)**
+데이터의  <mark>일관성을 높여</mark> 시각적 특징을 파악하고 <br>
+더 나아가, <mark>노이즈 감소</mark>를 통해 성능을 향상시키고자 함 <br>
 <br>
  
 ```python
