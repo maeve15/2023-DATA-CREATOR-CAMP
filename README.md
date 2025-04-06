@@ -15,7 +15,7 @@ Team DASH (Food Image Classification)
 
 ### 1-1. 각 클래스로 하는 분류 데이터셋과 데이터로더 준비
 ```python
-# 이미지 전처리 및 데이터셋 설정
+# 이미지 전처리 및 데이터셋 
 transform = transform.Compose([transforms.Resize((224, 224)),
                                transforms.ToTensor(),
                                transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
@@ -23,7 +23,7 @@ transform = transform.Compose([transforms.Resize((224, 224)),
 train_dataset = ImageFolder(train_dir, transform = transform)
 val_dataset = ImageFolder(val_dir, transform=transform)
 
-# 데이터로더 설정
+# 데이터로더 
 batch_size = 16
 trainloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 valloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
@@ -220,11 +220,34 @@ resnet50.fc = nn.Linear(2048, num_classes)
 <img width="330" alt="image" src="https://github.com/user-attachments/assets/e656e59d-1b53-4f11-952f-26b876c91dc3" />
 
 
+<br>
+
+### 2-3. ①, ② 의 성능 경향 파악
+
+<img width="923" alt="스크린샷 2025-04-06 오후 9 14 30" src="https://github.com/user-attachments/assets/10c6022b-bcb5-4fd2-80bc-b77520ff0633" />
 
 
+<br>
 
+### 3-1. 건강관리를 위한 음식 이미지 데이터셋과 데이터로더 준비
+```python
+# 데이터셋 경로(kfood_health)
+data_root = "/content/drive/MyDrive"
+train_dir = os.path.join(data_root, "kfood_health_train")
+val_dir = os.path.join(data_root, "kfood_health_val")
 
+transform = transform.Compose([
+    transform.Resize((224, 224)),
+    transform.ToTensor(),
+    transform.Normalize((0.485, 0.4546, 0.496), (0.229, 0.224, 0.225))]) # ImageNet mean/std 사용
 
+train_dataset = ImageFolder(train_dir, transform=transform)
+val_dataset = ImageFolder(val_dir, transform=transform)
 
+# 데이터로더 
+batch_size = 32
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle =True)
+val_loader = DataLoader(val_dataset, batch_size=batch_size)
+```
 
 
