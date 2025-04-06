@@ -51,8 +51,8 @@ for i, trainfolder in enumerate(menu_folders):
         plt.axis('off')
 plt.show()
 ```
+<img width="777" alt="image" src="https://github.com/user-attachments/assets/2227aeac-58db-404b-bc68-5c8c600f2617" />
 
-<img width="359" alt="image" src="https://github.com/user-attachments/assets/89d64164-29f2-475a-966f-17c9735f7821" />
 
 <br> 
 
@@ -249,5 +249,9 @@ batch_size = 32
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle =True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size)
 ```
+
+### 3-1. 건강관리를 위한 음식 이미지 데이터 각 클래스별 시각화
+<img width="777" alt="image" src="https://github.com/user-attachments/assets/f990e6f5-bcda-42c7-a7ee-2cb88c8eb40c" />
+
 
 
