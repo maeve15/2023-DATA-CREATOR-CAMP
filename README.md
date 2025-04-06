@@ -13,20 +13,36 @@ Team DASH (Food Image Classification)
   * kfood_health_train: 14,026개  <br>
   * kfood_health_val: 1,777개  <br>
 
+#### 1-1. 각 클래스로 하는 분류 데이터셋과 데이터로더 준비
+```python
+# 이미지 전처리 및 데이터셋 설정
+transform = transform.Compose([transforms.Resize((224, 224)),
+                               transforms.ToTensor(),
+                               transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
 
-* 42개 클래스 시각화
+train_dataset = ImageFolder(train_dir, transform = transform)
+val_dataset = ImageFolder(val_dir, transform=transform)
+
+# 데이터로더 설정
+batch_size = 16
+trainloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+valloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+```        
+<br>
+
+#### 1-1. 42개 클래스 시각화
 ```python
 menu_folders = os.listdir(train_dir)
 menu_folders = natsort.natsorted(menu_folders)
 plt.figure(figsize=(15,15))
 
 for i, trainfolder in enumerate(menu_folders):
-    trainmenu_path= os.path.join(train_dir, trainfolder)
+    trainmenu_path = os.path.join(train_dir, trainfolder)
     imgfiles = os.listdir(trianmenu_path)
 
     for j, imgfile in enumerate(imgfiles[:1]):
         imgpath = os.path.join(trainmenu_path, imgfile)
-        img= mpimg.imread(imgpath)
+        img = mpimg.imread(imgpath)
 
         name = unicodedata.normalize('NFC', trainfolder)
         plt.subplot(7, 7, i+1)
@@ -38,11 +54,74 @@ plt.show()
 
 <img width="359" alt="image" src="https://github.com/user-attachments/assets/89d64164-29f2-475a-966f-17c9735f7821" />
 
+<br> 
 
-* 모델 정의 
-ResNet18 <br>
 
-#### ResNet18 결과 비교
+#### 1-2. 모델 
+```python
+# 모델 정의
+resnet18 = models.resnet18(pretrained=False)
+num_classes = 42
+
+# 마지막 Fully Connected Layer 변경
+resnet18.fc = nn.Linear(resnet18.fc.in_features, num_classes)
+```
+```python
+# 모델 학습
+num_epochs = 50
+save_epochs = 1
+
+for epoch in range(num_epochs):
+    resnet18.train()
+    running_loss = 0.0
+
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data[0].to(device), data[1].to(device)
+
+        optimizer.zero_grad()
+        outputs = resnet18(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+        running_loss += loss.item()
+        if i % 500 == 499:
+            print(f'Epoch {epoch +1}, Batch {i+1}, Loss: {running_loss / 100: .3f}')
+            running_loss = 0.0
+```
+```python
+# Validation 데이터셋에 대한 모델 검증
+if epoch % validation_epochs == 0:
+   resnet18.eval()
+   correct = 0
+   total = 0
+
+   with torch.no_grad():
+        for data in val_loader:
+            inputs, labels = data[0].to(device), data[1].to(device)
+            outputs = resnet18(inputs)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+            # 잘못 분류된 경우 확인
+            misclassified_mask = predicted != labels
+            misclassified_examples.extend([(inputs[i], predicted[i].item[(), labels[i].item()) for i, is_misclassified in enumerate(misclassified_mask) if is_misclssified])
+
+   accuracy = 100 * correct / total
+   accuracy_list.append(accuracy) # accuracy 리스트에 추가
+   print(f'Validation Accuracy after {epoch+1} epochs: {accuracy: .2f}%')
+```
+
+<img width="271" alt="image" src="https://github.com/user-attachments/assets/715e04ca-4f1c-45e9-ac68-1c717290995f" />
+
+
+
+
+
+<br>
+
+#### 2-1. ResNet18 결과 비교
 classification accuracy<br>
 * 상위 7개 음식
 1. 미역국 - 89.80%
@@ -63,7 +142,7 @@ classification accuracy<br>
 
 <br>
 
-#### 결과 분석
+#### 2-1 결과 분석
 **1. '구이'류 음식, 비교적 분류 정확도가 낮은 편에 속함**
 <img width="1198" alt="스크린샷 2025-04-06 오후 7 47 49" src="https://github.com/user-attachments/assets/5144664a-907a-4470-89c2-4f3b0243e6b1" />
 
@@ -80,5 +159,5 @@ classification accuracy<br>
 <img width="1194" alt="스크린샷 2025-04-06 오후 7 54 28" src="https://github.com/user-attachments/assets/30d432dd-68cd-4e04-b3f2-6d5995900f64" />
 
 
-#### 
+#### 2-2. 2-1 결과 분석 바탕으로 
 
